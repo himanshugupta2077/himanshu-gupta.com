@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — himanshu-gupta.com</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#080b0f;--bg2:#0d1117;--bg3:#111820;--acid:#00ff88;--acid-dim:#00cc6a;--red:#ff3c3c;--amber:#ffb800;--blue:#60a5fa;--text:#c8d6e5;--text-dim:#5a6a7a;--text-bright:#eaf2ff;--border:#1a2535;--border-bright:#243348;--mono:'Share Tech Mono',monospace;--sans:'Syne',sans-serif;--body:'DM Mono',monospace;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:14px;line-height:1.7;overflow-x:hidden;cursor:none;}
+  .cursor{position:fixed;width:8px;height:8px;background:var(--acid);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;}
+  .cursor-ring{position:fixed;width:28px;height:28px;border:1px solid rgba(0,255,136,0.4);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform 0.15s ease-out,width 0.3s,height 0.3s;}
+  body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);pointer-events:none;z-index:1000;}
+  nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:56px;background:rgba(8,11,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+  .nav-logo{font-family:var(--mono);font-size:13px;color:var(--acid);text-decoration:none;letter-spacing:0.08em;display:flex;align-items:center;gap:8px;}
+  .nav-logo::before{content:'>';color:var(--text-dim);animation:blink 1.2s step-end infinite;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+  .nav-links{display:flex;gap:2rem;list-style:none;}
+  .nav-links a{font-family:var(--mono);font-size:12px;color:var(--text-dim);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.2s;position:relative;}
+  .nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--acid);transition:width 0.2s;}
+  .nav-links a:hover,.nav-links a.active{color:var(--acid);}
+  .nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+  .nav-cta{font-family:var(--mono);font-size:12px;color:var(--bg);background:var(--acid);text-decoration:none;padding:6px 14px;letter-spacing:0.1em;text-transform:uppercase;transition:background 0.2s;}
+  .nav-cta:hover{background:var(--acid-dim);}
+
+  .page-header{padding:8rem 4rem 4rem;border-bottom:1px solid var(--border);background:var(--bg2);}
+  .breadcrumb{font-family:var(--mono);font-size:11px;color:var(--text-dim);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:6px;}
+  .breadcrumb a{color:var(--text-dim);text-decoration:none;transition:color 0.2s;}
+  .breadcrumb a:hover{color:var(--acid);}
+  .breadcrumb span{color:var(--border-bright);}
+  .page-title{font-family:var(--sans);font-size:clamp(2.5rem,4vw,4rem);font-weight:800;color:var(--text-bright);letter-spacing:-0.03em;line-height:1;margin-bottom:1rem;}
+  .page-title .accent{color:var(--acid);}
+  .page-desc{font-size:13px;color:var(--text-dim);line-height:1.8;max-width:500px;}
+
+  /* BLOG LAYOUT */
+  .blog-layout{display:grid;grid-template-columns:1fr 300px;gap:0;min-height:60vh;}
+  .blog-main{border-right:1px solid var(--border);padding:3rem 4rem;}
+  .blog-sidebar{padding:3rem 2rem;background:var(--bg2);}
+
+  /* FILTER BAR */
+  .blog-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:2.5rem;}
+  .filter-btn{font-family:var(--mono);font-size:11px;color:var(--text-dim);border:1px solid var(--border);padding:5px 14px;text-transform:uppercase;letter-spacing:0.1em;cursor:pointer;background:transparent;transition:all 0.2s;}
+  .filter-btn:hover,.filter-btn.active{color:var(--acid);border-color:var(--acid);background:rgba(0,255,136,0.04);}
+
+  /* POST CARD */
+  .post-list{display:flex;flex-direction:column;gap:1px;background:var(--border);}
+  .post-card{background:var(--bg);padding:1.75rem 2rem;text-decoration:none;display:grid;grid-template-columns:1fr auto;gap:1.5rem;align-items:start;position:relative;overflow:hidden;transition:background 0.2s;}
+  .post-card:hover{background:var(--bg3);}
+  .post-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;transform:scaleY(0);transform-origin:top;transition:transform 0.3s;}
+  .post-card.cve::before{background:var(--red);}
+  .post-card.tip::before{background:var(--acid);}
+  .post-card.tool::before{background:var(--amber);}
+  .post-card.research::before{background:var(--blue);}
+  .post-card:hover::before{transform:scaleY(1);}
+
+  .post-type{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:6px;}
+  .post-type.cve{color:var(--red);}
+  .post-type.tip{color:var(--acid);}
+  .post-type.tool{color:var(--amber);}
+  .post-type.research{color:var(--blue);}
+
+  .post-title{font-family:var(--sans);font-size:1.05rem;font-weight:700;color:var(--text-bright);letter-spacing:-0.01em;line-height:1.3;margin-bottom:0.5rem;transition:color 0.2s;}
+  .post-card:hover .post-title{color:var(--acid);}
+  .post-excerpt{font-size:12px;color:var(--text-dim);line-height:1.8;margin-bottom:0.75rem;}
+  .post-meta{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;}
+  .post-meta .dot{color:var(--border-bright);}
+
+  .post-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;min-width:80px;}
+  .post-read{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap;}
+  .post-arrow{font-size:14px;color:var(--text-dim);transition:transform 0.2s,color 0.2s;}
+  .post-card:hover .post-arrow{transform:translate(3px,-3px);color:var(--acid);}
+
+  /* FEATURED POST */
+  .featured-post{background:var(--bg2);border:1px solid var(--border-bright);padding:2rem;text-decoration:none;display:block;margin-bottom:1px;position:relative;overflow:hidden;transition:background 0.2s;}
+  .featured-post::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--acid);transform:scaleX(0);transform-origin:left;transition:transform 0.3s;}
+  .featured-post:hover{background:var(--bg3);}
+  .featured-post:hover::before{transform:scaleX(1);}
+  .fp-label{font-family:var(--mono);font-size:10px;color:var(--acid);text-transform:uppercase;letter-spacing:0.2em;margin-bottom:0.75rem;display:flex;align-items:center;gap:8px;}
+  .fp-label::before{content:'★';}
+  .fp-title{font-family:var(--sans);font-size:1.3rem;font-weight:800;color:var(--text-bright);letter-spacing:-0.02em;line-height:1.2;margin-bottom:0.5rem;transition:color 0.2s;}
+  .featured-post:hover .fp-title{color:var(--acid);}
+  .fp-excerpt{font-size:12px;color:var(--text-dim);line-height:1.8;margin-bottom:1rem;}
+  .fp-meta{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;}
+
+  /* SIDEBAR */
+  .sidebar-section{margin-bottom:2.5rem;}
+  .sidebar-title{font-family:var(--mono);font-size:11px;color:var(--text-bright);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+  .sidebar-title::before{content:'//';color:var(--acid);}
+
+  .tag-cloud{display:flex;flex-wrap:wrap;gap:6px;}
+  .s-tag{font-family:var(--mono);font-size:10px;color:var(--text-dim);border:1px solid var(--border);padding:3px 10px;text-transform:uppercase;letter-spacing:0.08em;cursor:pointer;transition:all 0.2s;text-decoration:none;}
+  .s-tag:hover{color:var(--acid);border-color:var(--acid);}
+
+  .recent-list{display:flex;flex-direction:column;gap:12px;}
+  .recent-item{text-decoration:none;display:block;padding:10px;border:1px solid var(--border);transition:all 0.2s;}
+  .recent-item:hover{border-color:var(--border-bright);background:var(--bg3);}
+  .ri-type{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:4px;}
+  .ri-type.cve{color:var(--red);}
+  .ri-type.tip{color:var(--acid);}
+  .ri-type.tool{color:var(--amber);}
+  .ri-title{font-size:12px;color:var(--text-bright);line-height:1.4;transition:color 0.2s;}
+  .recent-item:hover .ri-title{color:var(--acid);}
+  .ri-date{font-family:var(--mono);font-size:10px;color:var(--text-dim);margin-top:4px;}
+
+  .nl-mini{background:var(--bg);border:1px solid var(--border);padding:1.25rem;}
+  .nl-mini p{font-size:12px;color:var(--text-dim);line-height:1.7;margin-bottom:1rem;}
+  .nl-mini input{width:100%;background:var(--bg2);border:1px solid var(--border-bright);color:var(--text-bright);font-family:var(--mono);font-size:12px;padding:8px 12px;outline:none;margin-bottom:6px;transition:border-color 0.2s;}
+  .nl-mini input:focus{border-color:var(--acid);}
+  .nl-mini button{width:100%;font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;background:var(--acid);color:var(--bg);border:none;padding:9px;cursor:pointer;transition:background 0.2s;}
+  .nl-mini button:hover{background:var(--acid-dim);}
+
+  footer{background:var(--bg2);border-top:1px solid var(--border);padding:3rem 4rem;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;}
+  .footer-logo{font-family:var(--mono);font-size:14px;color:var(--acid);letter-spacing:0.08em;margin-bottom:1rem;display:block;}
+  .footer-tagline{font-size:12px;color:var(--text-dim);line-height:1.8;margin-bottom:1.5rem;max-width:220px;}
+  .social-links{display:flex;gap:8px;}
+  .social-link{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-decoration:none;border:1px solid var(--border);padding:5px 10px;text-transform:uppercase;letter-spacing:0.1em;transition:all 0.2s;}
+  .social-link:hover{color:var(--acid);border-color:var(--acid);}
+  .footer-col h4{font-family:var(--mono);font-size:11px;color:var(--text-bright);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:1.25rem;}
+  .footer-links{list-style:none;display:flex;flex-direction:column;gap:8px;}
+  .footer-links a{font-size:12px;color:var(--text-dim);text-decoration:none;transition:color 0.2s;}
+  .footer-links a:hover{color:var(--text-bright);}
+  .footer-bottom{background:var(--bg);border-top:1px solid var(--border);padding:1.25rem 4rem;display:flex;justify-content:space-between;align-items:center;}
+  .footer-copy{font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;}
+  .footer-copy span{color:var(--acid);}
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease;}
+  .reveal.visible{opacity:1;transform:none;}
+  @media(max-width:900px){nav{padding:0 1.5rem;}.nav-links{display:none;}.page-header{padding:5rem 1.5rem 2.5rem;}.blog-layout{grid-template-columns:1fr;}.blog-main{padding:2rem 1.5rem;border-right:none;}.blog-sidebar{padding:2rem 1.5rem;border-top:1px solid var(--border);}footer{grid-template-columns:1fr 1fr;padding:3rem 1.5rem;}.footer-bottom{padding:1rem 1.5rem;flex-direction:column;gap:0.5rem;}}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">HIMANSHU-GUPTA.COM</a>
+  <ul class="nav-links">
+    <li><a href="guides.html">Guides</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
+    <li><a href="tools.html">Tools</a></li>
+    <li><a href="labs.html">Labs</a></li>
+    <li><a href="resources.html">Resources</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <a href="about.html#contact" class="nav-cta">Consulting</a>
+</nav>
+
+<div class="page-header">
+  <div class="breadcrumb"><a href="index.html">Home</a><span>/</span>Blog</div>
+  <h1 class="page-title">The <span class="accent">Blog</span></h1>
+  <p class="page-desc">Short, sharp posts. CVE breakdowns, tool reviews, security tips, and research notes — published when it matters.</p>
+</div>
+
+<div class="blog-layout">
+  <div class="blog-main">
+    <div class="blog-filter reveal">
+      <button class="filter-btn active">All</button>
+      <button class="filter-btn">CVE Breakdown</button>
+      <button class="filter-btn">Security Tip</button>
+      <button class="filter-btn">Tool Review</button>
+      <button class="filter-btn">Research</button>
+    </div>
+
+    <!-- FEATURED -->
+    <a href="#" class="featured-post reveal">
+      <div class="fp-label">Latest Post</div>
+      <div class="fp-title">CVE-2024-XXXX: Apache OFBiz Auth Bypass — Root Cause & PoC</div>
+      <div class="fp-excerpt">The CVE that broke the internet last month. Here's what actually happened — the auth bypass chain, which specific code was vulnerable, and a working reproduction in a local Docker setup.</div>
+      <div class="fp-meta"><span style="color:var(--red)">CVE Breakdown</span><span class="dot">·</span><span>Jun 14, 2025</span><span class="dot">·</span><span>8 min read</span></div>
+    </a>
+
+    <div class="post-list reveal">
+
+      <a href="#" class="post-card tip">
+        <div>
+          <div class="post-type tip">Security Tip</div>
+          <div class="post-title">Stop Using --proxy in sqlmap. Do This Instead.</div>
+          <div class="post-excerpt">Routing through Burp using the --proxy flag breaks half of sqlmap's features. Here's the correct setup for full interception without losing tamper scripts or threading.</div>
+          <div class="post-meta"><span>Jun 11, 2025</span><span class="dot">·</span><span>4 min</span></div>
+        </div>
+        <div class="post-right"><span class="post-read">4 min</span><span class="post-arrow">↗</span></div>
+      </a>
+
+      <a href="#" class="post-card tool">
+        <div>
+          <div class="post-type tool">Tool Review</div>
+          <div class="post-title">Caido vs Burp Suite — An Honest Comparison for Pentesters</div>
+          <div class="post-excerpt">I've been using Caido daily for 3 months alongside Burp. Here's where it wins, where it fails, and who should actually switch.</div>
+          <div class="post-meta"><span>Jun 7, 2025</span><span class="dot">·</span><span>7 min</span></div>
+        </div>
+        <div class="post-right"><span class="post-read">7 min</span><span class="post-arrow">↗</span></div>
+      </a>
+
+      <a href="#" class="post-card cve">
+        <div>
+          <div class="post-type cve">CVE Breakdown</div>
+          <div class="post-title">CVE-2024-YYYY: Ivanti Connect Secure Pre-Auth RCE</div>
+          <div class="post-excerpt">Stack-based buffer overflow in the SAML parsing component. Full analysis of the vulnerable code path and exploitation prerequisites.</div>
+          <div class="post-meta"><span>Jun 3, 2025</span><span class="dot">·</span><span>6 min</span></div>
+        </div>
+        <div class="post-right"><span class="post-read">6 min</span><span class="post-arrow">↗</span></div>
+      </a>
+
+      <a href="#" class="post-card tip">
+        <div>
+          <div class="post-type tip">Security Tip</div>
+          <div class="post-title">5 Burp Suite Extensions That Changed My Testing Workflow</div>
+          <div class="post-excerpt">Param Miner, JS Miner, Autorize, Turbo Intruder, and one underrated plugin that catches logic flaws automatically.</div>
+          <div class="post-meta"><span>May 28, 2025</span><span class="dot">·</span><span>5 min</span></div>
+        </div>
+        <div class="post-right"><span class="post-read">5 min</span><span class="post-arrow">↗</span></div>
+      </a>
+
+      <a href="#" class="post-card research">
+        <div>
+          <div class="post-type research">Research</div>
+          <div class="post-title">How I Found an IDOR in a Private Bug Bounty Program — Full Write-up</div>
+          <div class="post-excerpt">The target had rate limiting, WAF, and a custom auth layer. Here's the chain I used to bypass all three and access another user's private data.</div>
+          <div class="post-meta"><span>May 22, 2025</span><span class="dot">·</span><span>11 min</span></div>
+        </div>
+        <div class="post-right"><span class="post-read">11 min</span><span class="post-arrow">↗</span></div>
+      </a>
+
+      <a href="#" class="post-card tool">
+        <div>
+          <div class="post-type tool">Tool Review</div>
+          <div class="post-title">nuclei — Beyond the Templates: Writing Your Own Custom Detectors</div>
+          <div class="post-excerpt">Most people run nuclei with -t all and call it a day. Here's how to write custom templates for specific vuln classes you care about.</div>
+          <div class="post-meta"><span>May 17, 2025</span><span class="dot">·</span><span>9 min</span></div>
+        </div>
+        <div class="post-right"><span class="post-read">9 min</span><span class="post-arrow">↗</span></div>
+      </a>
+
+      <a href="#" class="post-card cve">
+        <div>
+          <div class="post-type cve">CVE Breakdown</div>
+          <div class="post-title">CVE-2024-ZZZZ: GitLab Path Traversal — Accessing Arbitrary Files</div>
+          <div class="post-excerpt">A classic path traversal in GitLab's file serving endpoint. Exploitable without authentication on affected versions.</div>
+          <div class="post-meta"><span>May 12, 2025</span><span class="dot">·</span><span>5 min</span></div>
+        </div>
+        <div class="post-right"><span class="post-read">5 min</span><span class="post-arrow">↗</span></div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="blog-sidebar">
+    <div class="sidebar-section reveal">
+      <div class="sidebar-title">Recent Posts</div>
+      <div class="recent-list">
+        <a href="#" class="recent-item">
+          <div class="ri-type cve">CVE</div>
+          <div class="ri-title">Apache OFBiz Auth Bypass — Root Cause</div>
+          <div class="ri-date">Jun 14</div>
+        </a>
+        <a href="#" class="recent-item">
+          <div class="ri-type tip">Tip</div>
+          <div class="ri-title">Stop Using --proxy in sqlmap</div>
+          <div class="ri-date">Jun 11</div>
+        </a>
+        <a href="#" class="recent-item">
+          <div class="ri-type tool">Tool</div>
+          <div class="ri-title">Caido vs Burp Suite Comparison</div>
+          <div class="ri-date">Jun 7</div>
+        </a>
+        <a href="#" class="recent-item">
+          <div class="ri-type cve">CVE</div>
+          <div class="ri-title">Ivanti Connect Secure Pre-Auth RCE</div>
+          <div class="ri-date">Jun 3</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="sidebar-section reveal">
+      <div class="sidebar-title">Tags</div>
+      <div class="tag-cloud">
+        <a href="#" class="s-tag">SQLi</a>
+        <a href="#" class="s-tag">XSS</a>
+        <a href="#" class="s-tag">SSRF</a>
+        <a href="#" class="s-tag">IDOR</a>
+        <a href="#" class="s-tag">JWT</a>
+        <a href="#" class="s-tag">CVE</a>
+        <a href="#" class="s-tag">Burp</a>
+        <a href="#" class="s-tag">nuclei</a>
+        <a href="#" class="s-tag">Recon</a>
+        <a href="#" class="s-tag">OAuth</a>
+        <a href="#" class="s-tag">WAF</a>
+        <a href="#" class="s-tag">RCE</a>
+        <a href="#" class="s-tag">API</a>
+        <a href="#" class="s-tag">GraphQL</a>
+      </div>
+    </div>
+
+    <div class="sidebar-section reveal">
+      <div class="sidebar-title">Newsletter</div>
+      <div class="nl-mini">
+        <p>Weekly security research, CVE breakdowns, and exploitation techniques. No spam.</p>
+        <input type="email" placeholder="your@email.com">
+        <button>Subscribe →</button>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<footer>
+  <div>
+    <span class="footer-logo">> HIMANSHU-GUPTA.COM</span>
+    <p class="footer-tagline">Security research, exploitation guides, and practitioner-focused content.</p>
+    <div class="social-links">
+      <a href="https://github.com/himanshugupta2077" target="_blank" class="social-link">GH</a>
+      <a href="https://linkedin.com/in/himanshugupta2077" target="_blank" class="social-link">LI</a>
+      <a href="mailto:himanshugupta2077@gmail.com" class="social-link">MAIL</a>
+    </div>
+  </div>
+  <div class="footer-col"><h4>Guides</h4><ul class="footer-links"><li><a href="guides.html">Web Security</a></li><li><a href="guides.html">API Security</a></li><li><a href="guides.html">Bug Bounty</a></li></ul></div>
+  <div class="footer-col"><h4>Content</h4><ul class="footer-links"><li><a href="blog.html">Blog</a></li><li><a href="labs.html">Labs</a></li><li><a href="tools.html">Tools</a></li><li><a href="resources.html">Resources</a></li></ul></div>
+  <div class="footer-col"><h4>Other</h4><ul class="footer-links"><li><a href="about.html">About</a></li><li><a href="about.html#contact">Contact</a></li></ul></div>
+</footer>
+<div class="footer-bottom">
+  <span class="footer-copy">© 2025 <span>Himanshu Gupta</span></span>
+  <span class="footer-copy">himanshu-gupta.com</span>
+</div>
+
+<script>
+  const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+  function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
+  animRing();
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>{cursor.style.width='16px';cursor.style.height='16px';ring.style.width='44px';ring.style.height='44px';});el.addEventListener('mouseleave',()=>{cursor.style.width='8px';cursor.style.height='8px';ring.style.width='28px';ring.style.height='28px';});});
+  const obs=new IntersectionObserver(e=>e.forEach(r=>{if(r.isIntersecting)r.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+</script>
+</body>
+</html>

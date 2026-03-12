@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Himanshu Gupta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#080b0f;--bg2:#0d1117;--bg3:#111820;--acid:#00ff88;--acid-dim:#00cc6a;--red:#ff3c3c;--amber:#ffb800;--blue:#60a5fa;--text:#c8d6e5;--text-dim:#5a6a7a;--text-bright:#eaf2ff;--border:#1a2535;--border-bright:#243348;--mono:'Share Tech Mono',monospace;--sans:'Syne',sans-serif;--body:'DM Mono',monospace;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:14px;line-height:1.7;overflow-x:hidden;cursor:none;}
+  .cursor{position:fixed;width:8px;height:8px;background:var(--acid);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;}
+  .cursor-ring{position:fixed;width:28px;height:28px;border:1px solid rgba(0,255,136,0.4);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform 0.15s ease-out,width 0.3s,height 0.3s;}
+  body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);pointer-events:none;z-index:1000;}
+  nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:56px;background:rgba(8,11,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+  .nav-logo{font-family:var(--mono);font-size:13px;color:var(--acid);text-decoration:none;letter-spacing:0.08em;display:flex;align-items:center;gap:8px;}
+  .nav-logo::before{content:'>';color:var(--text-dim);animation:blink 1.2s step-end infinite;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+  .nav-links{display:flex;gap:2rem;list-style:none;}
+  .nav-links a{font-family:var(--mono);font-size:12px;color:var(--text-dim);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.2s;position:relative;}
+  .nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--acid);transition:width 0.2s;}
+  .nav-links a:hover,.nav-links a.active{color:var(--acid);}
+  .nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+  .nav-cta{font-family:var(--mono);font-size:12px;color:var(--bg);background:var(--acid);text-decoration:none;padding:6px 14px;letter-spacing:0.1em;text-transform:uppercase;transition:background 0.2s;}
+  .nav-cta:hover{background:var(--acid-dim);}
+
+  /* HERO */
+  .about-hero{padding:8rem 4rem 0;background:var(--bg2);border-bottom:1px solid var(--border);}
+  .about-hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:end;}
+  .hero-left{padding-bottom:4rem;}
+  .breadcrumb{font-family:var(--mono);font-size:11px;color:var(--text-dim);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:6px;}
+  .breadcrumb a{color:var(--text-dim);text-decoration:none;transition:color 0.2s;}
+  .breadcrumb a:hover{color:var(--acid);}
+  .breadcrumb span{color:var(--border-bright);}
+  .about-name{font-family:var(--sans);font-size:clamp(2.5rem,5vw,5rem);font-weight:800;color:var(--text-bright);letter-spacing:-0.04em;line-height:0.95;margin-bottom:0.5rem;}
+  .about-name .accent{color:var(--acid);}
+  .about-role{font-family:var(--mono);font-size:13px;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1.5rem;}
+  .about-bio{font-size:13px;color:var(--text-dim);line-height:1.9;max-width:440px;margin-bottom:2rem;}
+  .hero-links{display:flex;gap:8px;flex-wrap:wrap;}
+  .hero-link{font-family:var(--mono);font-size:11px;color:var(--text-dim);border:1px solid var(--border);padding:7px 14px;text-decoration:none;text-transform:uppercase;letter-spacing:0.1em;transition:all 0.2s;display:flex;align-items:center;gap:6px;}
+  .hero-link:hover{color:var(--acid);border-color:var(--acid);}
+  .hero-link.primary{color:var(--bg);background:var(--acid);border-color:var(--acid);}
+  .hero-link.primary:hover{background:var(--acid-dim);}
+
+  .hero-right{border-left:1px solid var(--border);padding:4rem 4rem 0;display:flex;flex-direction:column;justify-content:flex-end;}
+
+  /* TERMINAL BIO */
+  .bio-terminal{background:var(--bg);border:1px solid var(--border-bright);margin-bottom:-1px;position:relative;}
+  .bio-terminal::before,.bio-terminal::after{content:'';position:absolute;width:10px;height:10px;}
+  .bio-terminal::before{top:-1px;left:-1px;border-top:2px solid var(--acid);border-left:2px solid var(--acid);}
+  .bio-terminal::after{bottom:-1px;right:-1px;border-bottom:2px solid var(--acid);border-right:2px solid var(--acid);}
+  .bt-bar{display:flex;align-items:center;gap:6px;padding:8px 14px;border-bottom:1px solid var(--border);background:var(--bg2);}
+  .bt-dot{width:8px;height:8px;border-radius:50%;}
+  .bt-bar .r{background:#ff5f57;}.bt-bar .y{background:#febc2e;}.bt-bar .g{background:#28c840;}
+  .bt-title{font-family:var(--mono);font-size:10px;color:var(--text-dim);margin:0 auto;letter-spacing:0.08em;}
+  .bt-body{padding:1.25rem;font-family:var(--mono);font-size:12px;line-height:2;}
+  .bt-line{display:flex;gap:8px;}
+  .bt-prompt{color:var(--acid);flex-shrink:0;}
+  .bt-cmd{color:var(--text-bright);}
+  .bt-out{color:var(--text-dim);padding-left:1rem;}
+  .bt-out.v{color:var(--acid);}
+  .bt-out.b{color:var(--blue);}
+  .bt-blank{height:6px;}
+
+  /* STATS BAR */
+  .stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
+  .stat-cell{background:var(--bg2);padding:1.5rem 2rem;text-align:center;}
+  .stat-num{font-family:var(--mono);font-size:1.8rem;color:var(--text-bright);display:block;line-height:1;}
+  .stat-label{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.12em;margin-top:6px;display:block;}
+
+  /* CONTENT SECTIONS */
+  main{padding:4rem;}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-bottom:4rem;}
+  .section-label{font-family:var(--mono);font-size:11px;color:var(--acid);text-transform:uppercase;letter-spacing:0.2em;margin-bottom:0.5rem;display:flex;align-items:center;gap:10px;}
+  .section-label::before{content:'//';color:var(--text-dim);}
+  .section-title{font-family:var(--sans);font-size:1.3rem;font-weight:800;color:var(--text-bright);letter-spacing:-0.02em;margin-bottom:1.5rem;}
+
+  /* EXPERTISE */
+  .exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+  .exp-card{background:var(--bg2);padding:1.25rem;transition:background 0.2s;}
+  .exp-card:hover{background:var(--bg3);}
+  .exp-icon{font-size:1.2rem;margin-bottom:8px;}
+  .exp-name{font-family:var(--mono);font-size:11px;color:var(--text-bright);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;}
+  .exp-desc{font-size:11px;color:var(--text-dim);line-height:1.6;}
+
+  /* CERTS */
+  .cert-list{display:flex;flex-direction:column;gap:2px;}
+  .cert-item{display:flex;align-items:center;gap:1rem;padding:12px 14px;border:1px solid var(--border);background:var(--bg2);transition:all 0.2s;}
+  .cert-item:hover{border-color:var(--border-bright);background:var(--bg3);}
+  .cert-abbr-tag{font-family:var(--mono);font-size:11px;font-weight:700;width:70px;flex-shrink:0;}
+  .cert-abbr-tag.oscp{color:var(--red);}
+  .cert-abbr-tag.bscp{color:var(--amber);}
+  .cert-abbr-tag.ewpt{color:var(--blue);}
+  .cert-abbr-tag.ceh{color:var(--acid);}
+  .cert-full{font-size:12px;color:var(--text-bright);flex:1;}
+  .cert-org-tag{font-family:var(--mono);font-size:10px;color:var(--text-dim);}
+  .cert-check{color:var(--acid);font-size:12px;}
+
+  /* TIMELINE */
+  .timeline{display:flex;flex-direction:column;gap:0;}
+  .tl-item{display:grid;grid-template-columns:80px 1fr;gap:1.5rem;padding:1.25rem 0;border-bottom:1px solid var(--border);}
+  .tl-item:last-child{border-bottom:none;}
+  .tl-year{font-family:var(--mono);font-size:11px;color:var(--acid);text-transform:uppercase;letter-spacing:0.1em;padding-top:3px;}
+  .tl-content{}
+  .tl-title{font-family:var(--sans);font-size:0.95rem;font-weight:700;color:var(--text-bright);margin-bottom:3px;}
+  .tl-desc{font-size:12px;color:var(--text-dim);line-height:1.6;}
+
+  /* CONTACT */
+  .contact-section{background:var(--bg2);border-top:1px solid var(--border);padding:4rem;} 
+  .contact-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:4rem;}
+  .contact-info{display:flex;flex-direction:column;gap:1rem;}
+  .contact-item{display:flex;align-items:flex-start;gap:1rem;padding:1rem 1.25rem;border:1px solid var(--border);background:var(--bg);transition:all 0.2s;text-decoration:none;}
+  .contact-item:hover{border-color:var(--acid);background:var(--bg3);}
+  .ci-icon{font-size:1rem;flex-shrink:0;margin-top:2px;}
+  .ci-info{}
+  .ci-label{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:2px;}
+  .ci-value{font-size:13px;color:var(--text-bright);transition:color 0.2s;}
+  .contact-item:hover .ci-value{color:var(--acid);}
+
+  /* FORM */
+  .contact-form{display:flex;flex-direction:column;gap:1rem;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .field-group{display:flex;flex-direction:column;gap:6px;}
+  .field-label{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.12em;}
+  input[type=text],input[type=email],select,textarea{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text-bright);font-family:var(--body);font-size:13px;padding:10px 14px;outline:none;transition:border-color 0.2s;-webkit-appearance:none;}
+  input:focus,select:focus,textarea:focus{border-color:var(--acid);}
+  input::placeholder,textarea::placeholder{color:var(--text-dim);}
+  select{background:var(--bg);color:var(--text-bright);}
+  select option{background:var(--bg2);}
+  textarea{resize:vertical;line-height:1.7;}
+  .submit-btn{font-family:var(--mono);font-size:12px;letter-spacing:0.15em;text-transform:uppercase;background:var(--acid);color:var(--bg);border:none;padding:13px 24px;cursor:pointer;transition:background 0.2s;display:flex;align-items:center;gap:8px;width:fit-content;}
+  .submit-btn:hover{background:var(--acid-dim);}
+  .form-note{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;}
+
+  footer{background:var(--bg2);border-top:1px solid var(--border);padding:3rem 4rem;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;}
+  .footer-logo{font-family:var(--mono);font-size:14px;color:var(--acid);letter-spacing:0.08em;margin-bottom:1rem;display:block;}
+  .footer-tagline{font-size:12px;color:var(--text-dim);line-height:1.8;margin-bottom:1.5rem;max-width:220px;}
+  .social-links{display:flex;gap:8px;}
+  .social-link{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-decoration:none;border:1px solid var(--border);padding:5px 10px;text-transform:uppercase;letter-spacing:0.1em;transition:all 0.2s;}
+  .social-link:hover{color:var(--acid);border-color:var(--acid);}
+  .footer-col h4{font-family:var(--mono);font-size:11px;color:var(--text-bright);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:1.25rem;}
+  .footer-links{list-style:none;display:flex;flex-direction:column;gap:8px;}
+  .footer-links a{font-size:12px;color:var(--text-dim);text-decoration:none;transition:color 0.2s;}
+  .footer-links a:hover{color:var(--text-bright);}
+  .footer-bottom{background:var(--bg);border-top:1px solid var(--border);padding:1.25rem 4rem;display:flex;justify-content:space-between;align-items:center;}
+  .footer-copy{font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;}
+  .footer-copy span{color:var(--acid);}
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease;}
+  .reveal.visible{opacity:1;transform:none;}
+  @media(max-width:900px){nav{padding:0 1.5rem;}.nav-links{display:none;}.about-hero{padding:5rem 1.5rem 0;}.about-hero-grid{grid-template-columns:1fr;}.hero-right{border-left:none;border-top:1px solid var(--border);padding:2rem 0 0;}.stats-bar{grid-template-columns:repeat(2,1fr);}.two-col{grid-template-columns:1fr;}main{padding:2rem 1.5rem;}.contact-section{padding:2rem 1.5rem;}.contact-grid{grid-template-columns:1fr;}.form-row{grid-template-columns:1fr;}footer{grid-template-columns:1fr 1fr;padding:3rem 1.5rem;}.footer-bottom{padding:1rem 1.5rem;flex-direction:column;gap:0.5rem;}}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">HIMANSHU-GUPTA.COM</a>
+  <ul class="nav-links">
+    <li><a href="guides.html">Guides</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="tools.html">Tools</a></li>
+    <li><a href="labs.html">Labs</a></li>
+    <li><a href="resources.html">Resources</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Consulting</a>
+</nav>
+
+<div class="about-hero">
+  <div class="about-hero-grid">
+    <div class="hero-left">
+      <div class="breadcrumb"><a href="index.html">Home</a><span>/</span>About</div>
+      <div class="about-name">Himanshu<br><span class="accent">Gupta</span></div>
+      <div class="about-role">Pentester · Security Researcher · Content Creator</div>
+      <p class="about-bio">I break web applications, research vulnerabilities, and document everything so others can learn. Building technical content at the intersection of offensive security and education — deep-dive guides, practice labs, and real-world exploitation walkthroughs.</p>
+      <div class="hero-links">
+        <a href="#contact" class="hero-link primary">Hire Me ↗</a>
+        <a href="https://github.com/himanshugupta2077" target="_blank" class="hero-link">GitHub ↗</a>
+        <a href="https://linkedin.com/in/himanshugupta2077" target="_blank" class="hero-link">LinkedIn ↗</a>
+        <a href="mailto:himanshugupta2077@gmail.com" class="hero-link">Email ↗</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="bio-terminal">
+        <div class="bt-bar"><div class="bt-dot r"></div><div class="bt-dot y"></div><div class="bt-dot g"></div><div class="bt-title">whoami.sh</div></div>
+        <div class="bt-body">
+          <div class="bt-line"><span class="bt-prompt">$</span><span class="bt-cmd">whoami</span></div>
+          <div class="bt-line"><span class="bt-out v">himanshu-gupta</span></div>
+          <div class="bt-blank"></div>
+          <div class="bt-line"><span class="bt-prompt">$</span><span class="bt-cmd">cat /etc/roles</span></div>
+          <div class="bt-line"><span class="bt-out">→ Penetration Tester</span></div>
+          <div class="bt-line"><span class="bt-out">→ Security Researcher</span></div>
+          <div class="bt-line"><span class="bt-out">→ Technical Content Creator</span></div>
+          <div class="bt-blank"></div>
+          <div class="bt-line"><span class="bt-prompt">$</span><span class="bt-cmd">cat /etc/focus</span></div>
+          <div class="bt-line"><span class="bt-out b">Web App Security · API Testing</span></div>
+          <div class="bt-line"><span class="bt-out b">Bug Bounty · Vuln Research</span></div>
+          <div class="bt-blank"></div>
+          <div class="bt-line"><span class="bt-prompt">$</span><span class="bt-cmd">cat /etc/contact</span></div>
+          <div class="bt-line"><span class="bt-out v">himanshugupta2077@gmail.com</span></div>
+          <div class="bt-line"><span class="bt-out v">github.com/himanshugupta2077</span></div>
+          <div class="bt-line"><span class="bt-out v">linkedin.com/in/himanshugupta2077</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-cell"><span class="stat-num">40+</span><span class="stat-label">Technical Guides</span></div>
+  <div class="stat-cell"><span class="stat-num">8+</span><span class="stat-label">CVEs Researched</span></div>
+  <div class="stat-cell"><span class="stat-num">4</span><span class="stat-label">Certifications</span></div>
+  <div class="stat-cell"><span class="stat-num">∞</span><span class="stat-label">Things to Break</span></div>
+</div>
+
+<main>
+  <div class="two-col">
+
+    <!-- EXPERTISE -->
+    <div class="reveal">
+      <div class="section-label">Expertise</div>
+      <div class="section-title">What I Do</div>
+      <div class="exp-grid">
+        <div class="exp-card">
+          <div class="exp-icon">⚡</div>
+          <div class="exp-name">Web App Pentest</div>
+          <div class="exp-desc">OWASP Top 10, business logic, auth bypass, injection attacks. Full engagements and targeted assessments.</div>
+        </div>
+        <div class="exp-card">
+          <div class="exp-icon">🔗</div>
+          <div class="exp-name">API Security</div>
+          <div class="exp-desc">REST and GraphQL testing, JWT attacks, OAuth flows, rate limiting bypass, mass assignment.</div>
+        </div>
+        <div class="exp-card">
+          <div class="exp-icon">🎯</div>
+          <div class="exp-name">Bug Bounty</div>
+          <div class="exp-desc">Active on HackerOne and Bugcrowd. P1/P2 severity findings across public and private programs.</div>
+        </div>
+        <div class="exp-card">
+          <div class="exp-icon">📚</div>
+          <div class="exp-name">Content & Education</div>
+          <div class="exp-desc">Deep-dive guides, lab walkthroughs, and YouTube content for the security community.</div>
+        </div>
+        <div class="exp-card">
+          <div class="exp-icon">🔬</div>
+          <div class="exp-name">Vuln Research</div>
+          <div class="exp-desc">CVE analysis, root cause research, PoC development, and responsible disclosure.</div>
+        </div>
+        <div class="exp-card">
+          <div class="exp-icon">🛠</div>
+          <div class="exp-name">Tool Development</div>
+          <div class="exp-desc">Custom recon pipelines, Python/Bash automation, security utilities — built for real workflows.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CERTIFICATIONS -->
+    <div class="reveal">
+      <div class="section-label">Certifications</div>
+      <div class="section-title">Credentials</div>
+      <div class="cert-list">
+        <div class="cert-item">
+          <span class="cert-abbr-tag oscp">OSCP</span>
+          <span class="cert-full">Offensive Security Certified Professional</span>
+          <span class="cert-org-tag">OffSec</span>
+          <span class="cert-check">✓</span>
+        </div>
+        <div class="cert-item">
+          <span class="cert-abbr-tag bscp">BSCP</span>
+          <span class="cert-full">Burp Suite Certified Practitioner</span>
+          <span class="cert-org-tag">PortSwigger</span>
+          <span class="cert-check">✓</span>
+        </div>
+        <div class="cert-item">
+          <span class="cert-abbr-tag ewpt">eWPTX</span>
+          <span class="cert-full">Web App Penetration Tester eXtreme v2</span>
+          <span class="cert-org-tag">eLearnSecurity</span>
+          <span class="cert-check">✓</span>
+        </div>
+        <div class="cert-item">
+          <span class="cert-abbr-tag ceh">CEH</span>
+          <span class="cert-full">Certified Ethical Hacker</span>
+          <span class="cert-org-tag">EC-Council</span>
+          <span class="cert-check">✓</span>
+        </div>
+      </div>
+
+      <div style="margin-top:2.5rem;">
+        <div class="section-label">Timeline</div>
+        <div class="section-title">Journey</div>
+        <div class="timeline">
+          <div class="tl-item">
+            <span class="tl-year">2025</span>
+            <div class="tl-content"><div class="tl-title">Launched himanshu-gupta.com</div><div class="tl-desc">Security research platform — guides, labs, tools, and content creation.</div></div>
+          </div>
+          <div class="tl-item">
+            <span class="tl-year">2024</span>
+            <div class="tl-content"><div class="tl-title">Active Bug Bounty Hunting</div><div class="tl-desc">Multiple P1/P2 findings on HackerOne and Bugcrowd private programs.</div></div>
+          </div>
+          <div class="tl-item">
+            <span class="tl-year">2024</span>
+            <div class="tl-content"><div class="tl-title">OSCP Certified</div><div class="tl-desc">Passed the 24-hour exam. Covered network pentesting, privilege escalation, and AD attacks.</div></div>
+          </div>
+          <div class="tl-item">
+            <span class="tl-year">2023</span>
+            <div class="tl-content"><div class="tl-title">BSCP Certified</div><div class="tl-desc">PortSwigger Web Security Academy — all labs completed, practitioner exam passed.</div></div>
+          </div>
+          <div class="tl-item">
+            <span class="tl-year">2022</span>
+            <div class="tl-content"><div class="tl-title">Started Security Journey</div><div class="tl-desc">First CVE research, eJPT certification, and deep dive into web app security.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-grid">
+    <div>
+      <div class="section-label reveal">Contact</div>
+      <h2 style="font-family:var(--sans);font-size:2rem;font-weight:800;color:var(--text-bright);letter-spacing:-0.03em;line-height:1;margin-bottom:1rem;" class="reveal">Let's Work<br><span style="color:var(--acid)">Together</span></h2>
+      <p style="font-size:13px;color:var(--text-dim);line-height:1.8;max-width:320px;margin-bottom:2rem;" class="reveal">Available for web app pentesting engagements, security consulting, content collaboration, and speaking opportunities.</p>
+
+      <div class="contact-info reveal">
+        <a href="mailto:himanshugupta2077@gmail.com" class="contact-item">
+          <div class="ci-icon">✉</div>
+          <div class="ci-info"><div class="ci-label">Email</div><div class="ci-value">himanshugupta2077@gmail.com</div></div>
+        </a>
+        <a href="https://linkedin.com/in/himanshugupta2077" target="_blank" class="contact-item">
+          <div class="ci-icon">🔗</div>
+          <div class="ci-info"><div class="ci-label">LinkedIn</div><div class="ci-value">linkedin.com/in/himanshugupta2077</div></div>
+        </a>
+        <a href="https://github.com/himanshugupta2077" target="_blank" class="contact-item">
+          <div class="ci-icon">⌨</div>
+          <div class="ci-info"><div class="ci-label">GitHub</div><div class="ci-value">github.com/himanshugupta2077</div></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="section-label">Send a Message</div>
+      <div class="section-title">Inquiry Form</div>
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label">Name</label>
+            <input type="text" placeholder="Your name">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Email</label>
+            <input type="email" placeholder="you@company.com">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Subject</label>
+          <select>
+            <option value="" style="color:var(--text-dim)">Select inquiry type</option>
+            <option>Penetration Testing Engagement</option>
+            <option>Security Consulting</option>
+            <option>Content Collaboration</option>
+            <option>Sponsorship</option>
+            <option>Speaking Opportunity</option>
+            <option>General Inquiry</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Message</label>
+          <textarea rows="5" placeholder="Describe your project, timeline, and scope..."></textarea>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+          <button class="submit-btn" onclick="handleSubmit(this)">Send Message →</button>
+          <span class="form-note" id="formNote"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <span class="footer-logo">> HIMANSHU-GUPTA.COM</span>
+    <p class="footer-tagline">Security research, exploitation guides, and practitioner-focused content.</p>
+    <div class="social-links">
+      <a href="https://github.com/himanshugupta2077" target="_blank" class="social-link">GH</a>
+      <a href="https://linkedin.com/in/himanshugupta2077" target="_blank" class="social-link">LI</a>
+      <a href="mailto:himanshugupta2077@gmail.com" class="social-link">MAIL</a>
+    </div>
+  </div>
+  <div class="footer-col"><h4>Guides</h4><ul class="footer-links"><li><a href="guides.html">Web Security</a></li><li><a href="guides.html">API Security</a></li></ul></div>
+  <div class="footer-col"><h4>Content</h4><ul class="footer-links"><li><a href="blog.html">Blog</a></li><li><a href="labs.html">Labs</a></li><li><a href="tools.html">Tools</a></li><li><a href="resources.html">Resources</a></li></ul></div>
+  <div class="footer-col"><h4>Other</h4><ul class="footer-links"><li><a href="about.html">About</a></li><li><a href="#contact">Contact</a></li></ul></div>
+</footer>
+<div class="footer-bottom">
+  <span class="footer-copy">© 2025 <span>Himanshu Gupta</span></span>
+  <span class="footer-copy">himanshu-gupta.com</span>
+</div>
+
+<script>
+  const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+  function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
+  animRing();
+  document.querySelectorAll('a,button,select').forEach(el=>{el.addEventListener('mouseenter',()=>{cursor.style.width='16px';cursor.style.height='16px';ring.style.width='44px';ring.style.height='44px';});el.addEventListener('mouseleave',()=>{cursor.style.width='8px';cursor.style.height='8px';ring.style.width='28px';ring.style.height='28px';});});
+  const obs=new IntersectionObserver(e=>e.forEach(r=>{if(r.isIntersecting)r.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+
+  function handleSubmit(btn) {
+    const note = document.getElementById('formNote');
+    btn.textContent = 'Sending...';
+    btn.style.opacity = '0.7';
+    setTimeout(() => {
+      btn.textContent = 'Message Sent ✓';
+      btn.style.background = 'var(--acid-dim)';
+      note.textContent = 'Will reply within 24-48 hours.';
+      note.style.color = 'var(--acid)';
+    }, 1200);
+  }
+</script>
+</body>
+</html>

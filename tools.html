@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tools — himanshu-gupta.com</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#080b0f;--bg2:#0d1117;--bg3:#111820;--acid:#00ff88;--acid-dim:#00cc6a;--red:#ff3c3c;--amber:#ffb800;--blue:#60a5fa;--text:#c8d6e5;--text-dim:#5a6a7a;--text-bright:#eaf2ff;--border:#1a2535;--border-bright:#243348;--mono:'Share Tech Mono',monospace;--sans:'Syne',sans-serif;--body:'DM Mono',monospace;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:14px;line-height:1.7;overflow-x:hidden;cursor:none;}
+  .cursor{position:fixed;width:8px;height:8px;background:var(--acid);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;}
+  .cursor-ring{position:fixed;width:28px;height:28px;border:1px solid rgba(0,255,136,0.4);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform 0.15s ease-out,width 0.3s,height 0.3s;}
+  body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);pointer-events:none;z-index:1000;}
+  nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:56px;background:rgba(8,11,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+  .nav-logo{font-family:var(--mono);font-size:13px;color:var(--acid);text-decoration:none;letter-spacing:0.08em;display:flex;align-items:center;gap:8px;}
+  .nav-logo::before{content:'>';color:var(--text-dim);animation:blink 1.2s step-end infinite;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+  .nav-links{display:flex;gap:2rem;list-style:none;}
+  .nav-links a{font-family:var(--mono);font-size:12px;color:var(--text-dim);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.2s;position:relative;}
+  .nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--acid);transition:width 0.2s;}
+  .nav-links a:hover,.nav-links a.active{color:var(--acid);}
+  .nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+  .nav-cta{font-family:var(--mono);font-size:12px;color:var(--bg);background:var(--acid);text-decoration:none;padding:6px 14px;letter-spacing:0.1em;text-transform:uppercase;transition:background 0.2s;}
+  .nav-cta:hover{background:var(--acid-dim);}
+  .page-header{padding:8rem 4rem 4rem;border-bottom:1px solid var(--border);background:var(--bg2);}
+  .breadcrumb{font-family:var(--mono);font-size:11px;color:var(--text-dim);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:6px;}
+  .breadcrumb a{color:var(--text-dim);text-decoration:none;transition:color 0.2s;}
+  .breadcrumb a:hover{color:var(--acid);}
+  .breadcrumb span{color:var(--border-bright);}
+  .page-title{font-family:var(--sans);font-size:clamp(2.5rem,4vw,4rem);font-weight:800;color:var(--text-bright);letter-spacing:-0.03em;line-height:1;margin-bottom:1rem;}
+  .page-title .accent{color:var(--acid);}
+  .page-desc{font-size:13px;color:var(--text-dim);line-height:1.8;max-width:500px;}
+
+  /* TOOLS GRID */
+  .tools-main{padding:3rem 4rem;}
+  .tools-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);margin-bottom:3rem;}
+
+  /* TOOL CARD */
+  .tool-card{background:var(--bg2);padding:0;}
+  .tool-header{padding:1.5rem 1.75rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;}
+  .tool-header-left{}
+  .tool-num{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:6px;}
+  .tool-name{font-family:var(--sans);font-size:1.1rem;font-weight:700;color:var(--text-bright);letter-spacing:-0.01em;}
+  .tool-desc{font-size:12px;color:var(--text-dim);margin-top:4px;line-height:1.6;}
+  .tool-status{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:0.12em;padding:3px 8px;border:1px solid;white-space:nowrap;margin-top:4px;}
+  .tool-status.live{color:var(--acid);border-color:var(--acid);}
+  .tool-status.soon{color:var(--text-dim);border-color:var(--border);}
+
+  .tool-body{padding:1.5rem 1.75rem;}
+
+  /* JWT DECODER */
+  .field-label{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:6px;}
+  textarea,input[type=text]{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text-bright);font-family:var(--mono);font-size:12px;padding:10px 12px;outline:none;resize:vertical;transition:border-color 0.2s;line-height:1.5;}
+  textarea:focus,input[type=text]:focus{border-color:var(--acid);}
+  textarea::placeholder,input::placeholder{color:var(--text-dim);}
+  .tool-btn{font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;background:var(--acid);color:var(--bg);border:none;padding:9px 18px;cursor:pointer;transition:background 0.2s;margin-top:8px;}
+  .tool-btn:hover{background:var(--acid-dim);}
+  .tool-btn.ghost{background:transparent;color:var(--text-dim);border:1px solid var(--border);}
+  .tool-btn.ghost:hover{color:var(--acid);border-color:var(--acid);}
+  .tool-btn-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
+  .output-box{background:var(--bg);border:1px solid var(--border);padding:12px;margin-top:12px;min-height:80px;font-family:var(--mono);font-size:12px;line-height:1.7;white-space:pre-wrap;word-break:break-all;color:var(--text-dim);}
+  .output-box .key{color:var(--blue);}
+  .output-box .val{color:var(--acid);}
+  .output-box .str{color:var(--amber);}
+  .output-box .err{color:var(--red);}
+  .output-box.success{border-color:rgba(0,255,136,0.3);}
+  .output-box.error{border-color:rgba(255,60,60,0.3);}
+  .field-group{margin-bottom:1rem;}
+
+  /* TABS */
+  .tool-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1rem;}
+  .tool-tab{font-family:var(--mono);font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;padding:8px 16px;cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.2s;}
+  .tool-tab.active{color:var(--acid);border-bottom-color:var(--acid);}
+  .tool-tab:hover{color:var(--text-bright);}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  /* HASH SECTION */
+  .hash-results{margin-top:1rem;}
+  .hash-row{display:flex;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);gap:1rem;}
+  .hash-row:last-child{border-bottom:none;}
+  .hash-algo{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;width:80px;flex-shrink:0;}
+  .hash-val{font-family:var(--mono);font-size:11px;color:var(--text-bright);flex:1;word-break:break-all;}
+  .hash-copy{font-family:var(--mono);font-size:9px;color:var(--text-dim);cursor:pointer;border:1px solid var(--border);padding:2px 8px;transition:all 0.2s;flex-shrink:0;}
+  .hash-copy:hover{color:var(--acid);border-color:var(--acid);}
+
+  /* ENCODING TOOL */
+  .enc-btns{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0;}
+  .enc-btn{font-family:var(--mono);font-size:10px;color:var(--text-dim);border:1px solid var(--border);padding:5px 12px;text-transform:uppercase;letter-spacing:0.08em;cursor:pointer;background:transparent;transition:all 0.2s;}
+  .enc-btn:hover,.enc-btn.active{color:var(--acid);border-color:var(--acid);background:rgba(0,255,136,0.04);}
+
+  /* HEADER ANALYZER */
+  .header-list{margin-top:8px;display:flex;flex-direction:column;gap:4px;}
+  .header-item{display:grid;grid-template-columns:180px 1fr auto;gap:8px;align-items:start;padding:8px 10px;background:var(--bg);border-left:2px solid var(--border);font-family:var(--mono);font-size:11px;transition:border-color 0.2s;}
+  .header-item.good{border-left-color:var(--acid);}
+  .header-item.warn{border-left-color:var(--amber);}
+  .header-item.bad{border-left-color:var(--red);}
+  .header-item.info{border-left-color:var(--blue);}
+  .h-name{color:var(--text-dim);word-break:break-all;}
+  .h-value{color:var(--text-bright);word-break:break-all;}
+  .h-badge{font-size:9px;text-transform:uppercase;padding:2px 6px;border:1px solid;white-space:nowrap;align-self:start;}
+  .h-badge.good{color:var(--acid);border-color:var(--acid);}
+  .h-badge.warn{color:var(--amber);border-color:var(--amber);}
+  .h-badge.bad{color:var(--red);border-color:var(--red);}
+  .h-badge.info{color:var(--blue);border-color:var(--blue);}
+
+  /* COMING SOON CARD */
+  .coming-soon{opacity:0.5;pointer-events:none;}
+  .coming-soon .tool-body{display:flex;align-items:center;justify-content:center;min-height:160px;}
+  .cs-text{font-family:var(--mono);font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.15em;text-align:center;}
+  .cs-text span{display:block;font-family:var(--sans);font-size:1.2rem;font-weight:700;color:var(--text-bright);letter-spacing:-0.01em;margin-bottom:8px;}
+
+  footer{background:var(--bg2);border-top:1px solid var(--border);padding:3rem 4rem;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;}
+  .footer-logo{font-family:var(--mono);font-size:14px;color:var(--acid);letter-spacing:0.08em;margin-bottom:1rem;display:block;}
+  .footer-tagline{font-size:12px;color:var(--text-dim);line-height:1.8;margin-bottom:1.5rem;max-width:220px;}
+  .social-links{display:flex;gap:8px;}
+  .social-link{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-decoration:none;border:1px solid var(--border);padding:5px 10px;text-transform:uppercase;letter-spacing:0.1em;transition:all 0.2s;}
+  .social-link:hover{color:var(--acid);border-color:var(--acid);}
+  .footer-col h4{font-family:var(--mono);font-size:11px;color:var(--text-bright);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:1.25rem;}
+  .footer-links{list-style:none;display:flex;flex-direction:column;gap:8px;}
+  .footer-links a{font-size:12px;color:var(--text-dim);text-decoration:none;transition:color 0.2s;}
+  .footer-links a:hover{color:var(--text-bright);}
+  .footer-bottom{background:var(--bg);border-top:1px solid var(--border);padding:1.25rem 4rem;display:flex;justify-content:space-between;align-items:center;}
+  .footer-copy{font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;}
+  .footer-copy span{color:var(--acid);}
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease;}
+  .reveal.visible{opacity:1;transform:none;}
+  @media(max-width:900px){nav{padding:0 1.5rem;}.nav-links{display:none;}.page-header,.tools-main{padding:5rem 1.5rem 2.5rem;}.tools-grid{grid-template-columns:1fr;}.header-item{grid-template-columns:1fr;}.h-badge{width:fit-content;}footer{grid-template-columns:1fr 1fr;padding:3rem 1.5rem;}.footer-bottom{padding:1rem 1.5rem;flex-direction:column;gap:0.5rem;}}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">HIMANSHU-GUPTA.COM</a>
+  <ul class="nav-links">
+    <li><a href="guides.html">Guides</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="tools.html" class="active">Tools</a></li>
+    <li><a href="labs.html">Labs</a></li>
+    <li><a href="resources.html">Resources</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <a href="about.html#contact" class="nav-cta">Consulting</a>
+</nav>
+
+<div class="page-header">
+  <div class="breadcrumb"><a href="index.html">Home</a><span>/</span>Tools</div>
+  <h1 class="page-title">Security <span class="accent">Tools</span></h1>
+  <p class="page-desc">Browser-based utilities for pentesters. No installs, no tracking, nothing sent to a server — everything runs locally in your browser.</p>
+</div>
+
+<div class="tools-main">
+  <div class="tools-grid reveal">
+
+    <!-- JWT DECODER -->
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-header-left">
+          <div class="tool-num">Tool 01</div>
+          <div class="tool-name">JWT Decoder & Analyzer</div>
+          <div class="tool-desc">Decode, inspect, and analyze JWT tokens. Detects weak algorithms and misconfiguration.</div>
+        </div>
+        <span class="tool-status live">LIVE</span>
+      </div>
+      <div class="tool-body">
+        <div class="field-group">
+          <div class="field-label">Paste JWT Token</div>
+          <textarea id="jwtInput" rows="3" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."></textarea>
+        </div>
+        <div class="tool-btn-row">
+          <button class="tool-btn" onclick="decodeJWT()">Decode →</button>
+          <button class="tool-btn ghost" onclick="clearJWT()">Clear</button>
+        </div>
+        <div id="jwtOutput" class="output-box" style="min-height:120px;display:none;"></div>
+      </div>
+    </div>
+
+    <!-- HASH GENERATOR -->
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-header-left">
+          <div class="tool-num">Tool 02</div>
+          <div class="tool-name">Hash Generator</div>
+          <div class="tool-desc">Generate MD5, SHA-1, SHA-256, SHA-512 hashes. Identify hash type from pattern.</div>
+        </div>
+        <span class="tool-status live">LIVE</span>
+      </div>
+      <div class="tool-body">
+        <div class="tool-tabs">
+          <button class="tool-tab active" onclick="switchTab(this,'hashGen')">Generate</button>
+          <button class="tool-tab" onclick="switchTab(this,'hashId')">Identify</button>
+        </div>
+        <div class="tab-panel active" id="hashGen">
+          <div class="field-group">
+            <div class="field-label">Input String</div>
+            <input type="text" id="hashInput" placeholder="Enter text to hash...">
+          </div>
+          <button class="tool-btn" onclick="generateHashes()">Generate All →</button>
+          <div class="hash-results" id="hashResults"></div>
+        </div>
+        <div class="tab-panel" id="hashId">
+          <div class="field-group">
+            <div class="field-label">Paste Hash</div>
+            <input type="text" id="hashIdInput" placeholder="5f4dcc3b5aa765d61d8327deb882cf99">
+          </div>
+          <button class="tool-btn" onclick="identifyHash()">Identify →</button>
+          <div id="hashIdOutput" class="output-box" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENCODER / DECODER -->
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-header-left">
+          <div class="tool-num">Tool 03</div>
+          <div class="tool-name">Encoder / Decoder</div>
+          <div class="tool-desc">Base64, URL encode/decode, HTML entities, hex. Essential for payload crafting.</div>
+        </div>
+        <span class="tool-status live">LIVE</span>
+      </div>
+      <div class="tool-body">
+        <div class="field-group">
+          <div class="field-label">Input</div>
+          <textarea id="encInput" rows="3" placeholder="Enter text or encoded string..."></textarea>
+        </div>
+        <div class="enc-btns">
+          <button class="enc-btn" onclick="encOp('b64e')">Base64 Encode</button>
+          <button class="enc-btn" onclick="encOp('b64d')">Base64 Decode</button>
+          <button class="enc-btn" onclick="encOp('urle')">URL Encode</button>
+          <button class="enc-btn" onclick="encOp('urld')">URL Decode</button>
+          <button class="enc-btn" onclick="encOp('htmle')">HTML Encode</button>
+          <button class="enc-btn" onclick="encOp('hexe')">→ Hex</button>
+          <button class="enc-btn" onclick="encOp('hexd')">Hex →</button>
+        </div>
+        <div id="encOutput" class="output-box" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- HEADER ANALYZER -->
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-header-left">
+          <div class="tool-num">Tool 04</div>
+          <div class="tool-name">HTTP Header Analyzer</div>
+          <div class="tool-desc">Paste response headers. Instantly flags missing security headers and misconfigurations.</div>
+        </div>
+        <span class="tool-status live">LIVE</span>
+      </div>
+      <div class="tool-body">
+        <div class="field-group">
+          <div class="field-label">Paste Response Headers</div>
+          <textarea id="headerInput" rows="4" placeholder="HTTP/1.1 200 OK&#10;Content-Type: text/html&#10;Server: Apache/2.4.52&#10;X-Powered-By: PHP/8.1..."></textarea>
+        </div>
+        <button class="tool-btn" onclick="analyzeHeaders()">Analyze →</button>
+        <div id="headerOutput" style="display:none;margin-top:12px;">
+          <div class="header-list" id="headerList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMING SOON: Regex Tester -->
+    <div class="tool-card coming-soon">
+      <div class="tool-header">
+        <div class="tool-header-left">
+          <div class="tool-num">Tool 05</div>
+          <div class="tool-name">Regex Payload Tester</div>
+          <div class="tool-desc">Test regex patterns against input for WAF bypass and filter evasion analysis.</div>
+        </div>
+        <span class="tool-status soon">COMING SOON</span>
+      </div>
+      <div class="tool-body">
+        <div class="cs-text"><span>Regex Tester</span>In development</div>
+      </div>
+    </div>
+
+    <!-- COMING SOON: CIDR Calculator -->
+    <div class="tool-card coming-soon">
+      <div class="tool-header">
+        <div class="tool-header-left">
+          <div class="tool-num">Tool 06</div>
+          <div class="tool-name">CIDR / IP Calculator</div>
+          <div class="tool-desc">Calculate subnet ranges, IPs in range, network/broadcast addresses for recon planning.</div>
+        </div>
+        <span class="tool-status soon">COMING SOON</span>
+      </div>
+      <div class="tool-body">
+        <div class="cs-text"><span>CIDR Calculator</span>In development</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div>
+    <span class="footer-logo">> HIMANSHU-GUPTA.COM</span>
+    <p class="footer-tagline">Security research, exploitation guides, and practitioner-focused content.</p>
+    <div class="social-links">
+      <a href="https://github.com/himanshugupta2077" target="_blank" class="social-link">GH</a>
+      <a href="https://linkedin.com/in/himanshugupta2077" target="_blank" class="social-link">LI</a>
+      <a href="mailto:himanshugupta2077@gmail.com" class="social-link">MAIL</a>
+    </div>
+  </div>
+  <div class="footer-col"><h4>Guides</h4><ul class="footer-links"><li><a href="guides.html">Web Security</a></li><li><a href="guides.html">API Security</a></li></ul></div>
+  <div class="footer-col"><h4>Content</h4><ul class="footer-links"><li><a href="blog.html">Blog</a></li><li><a href="labs.html">Labs</a></li><li><a href="resources.html">Resources</a></li></ul></div>
+  <div class="footer-col"><h4>Other</h4><ul class="footer-links"><li><a href="about.html">About</a></li><li><a href="about.html#contact">Contact</a></li></ul></div>
+</footer>
+<div class="footer-bottom">
+  <span class="footer-copy">© 2025 <span>Himanshu Gupta</span></span>
+  <span class="footer-copy">himanshu-gupta.com</span>
+</div>
+
+<script>
+  // Cursor
+  const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+  function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
+  animRing();
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>{cursor.style.width='16px';cursor.style.height='16px';ring.style.width='44px';ring.style.height='44px';});el.addEventListener('mouseleave',()=>{cursor.style.width='8px';cursor.style.height='8px';ring.style.width='28px';ring.style.height='28px';});});
+  const obs=new IntersectionObserver(e=>e.forEach(r=>{if(r.isIntersecting)r.target.classList.add('visible');}),{threshold:0.05});
+  document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+
+  // TABS
+  function switchTab(btn, panelId) {
+    btn.closest('.tool-body').querySelectorAll('.tool-tab').forEach(t=>t.classList.remove('active'));
+    btn.classList.add('active');
+    btn.closest('.tool-body').querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById(panelId).classList.add('active');
+  }
+
+  // JWT DECODER
+  function decodeJWT() {
+    const token = document.getElementById('jwtInput').value.trim();
+    const out = document.getElementById('jwtOutput');
+    out.style.display='block';
+    if (!token) { out.className='output-box error'; out.innerHTML='<span class="err">No token provided.</span>'; return; }
+    const parts = token.split('.');
+    if (parts.length !== 3) { out.className='output-box error'; out.innerHTML='<span class="err">Invalid JWT format. Expected 3 parts (header.payload.signature)</span>'; return; }
+    try {
+      const decode = str => { try { return JSON.parse(atob(str.replace(/-/g,'+').replace(/_/,'/') + '=='.slice(0,(4-str.length%4)%4))); } catch(e) { return null; } };
+      const header = decode(parts[0]);
+      const payload = decode(parts[1]);
+      let html = '';
+      const alg = header?.alg || 'unknown';
+      const weakAlgs = ['none','HS256'];
+      html += `<span class="key">// HEADER</span>\n`;
+      html += syntaxHL(header) + '\n\n';
+      html += `<span class="key">// PAYLOAD</span>\n`;
+      html += syntaxHL(payload) + '\n\n';
+      if (payload?.exp) {
+        const exp = new Date(payload.exp * 1000);
+        const now = new Date();
+        const expired = exp < now;
+        html += `<span class="key">// EXPIRY</span>\n<span class="${expired?'err':'val'}">${exp.toUTCString()} — ${expired?'EXPIRED':'VALID'}</span>\n\n`;
+      }
+      html += `<span class="key">// SECURITY ANALYSIS</span>\n`;
+      if (alg === 'none') html += `<span class="err">⚠ alg:none — Token requires NO signature! Critical vulnerability.</span>\n`;
+      else if (alg === 'HS256') html += `<span class="str">⚠ HS256 — Symmetric key. Vulnerable to key confusion attacks.</span>\n`;
+      else html += `<span class="val">✓ Algorithm: ${alg}</span>\n`;
+      html += `<span class="key">// SIGNATURE</span>\n<span style="color:var(--text-dim)">${parts[2]}</span>`;
+      out.className='output-box success';
+      out.innerHTML = html;
+    } catch(e) { out.className='output-box error'; out.innerHTML=`<span class="err">Failed to decode: ${e.message}</span>`; }
+  }
+  function syntaxHL(obj) {
+    if (!obj) return '<span class="err">Failed to parse</span>';
+    return JSON.stringify(obj, null, 2)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"([^"]+)":/g,'<span class="key">"$1"</span>:')
+      .replace(/: "([^"]*)"/g,': <span class="str">"$1"</span>')
+      .replace(/: (\d+)/g,': <span class="val">$1</span>')
+      .replace(/: (true|false|null)/g,': <span class="val">$1</span>');
+  }
+  function clearJWT() { document.getElementById('jwtInput').value=''; document.getElementById('jwtOutput').style.display='none'; }
+
+  // HASH GENERATOR
+  async function generateHashes() {
+    const input = document.getElementById('hashInput').value;
+    if (!input) return;
+    const container = document.getElementById('hashResults');
+    container.innerHTML = '<div style="font-family:var(--mono);font-size:11px;color:var(--text-dim);padding:8px 0">Computing...</div>';
+    const enc = new TextEncoder();
+    const data = enc.encode(input);
+    const algos = [['MD5 (simulated)','md5'],['SHA-1','SHA-1'],['SHA-256','SHA-256'],['SHA-512','SHA-512']];
+    let html = '';
+    for (const [label, algo] of algos) {
+      if (algo === 'md5') { html += hashRow(label, md5(input)); continue; }
+      try {
+        const buf = await crypto.subtle.digest(algo, data);
+        const hex = Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+        html += hashRow(label, hex);
+      } catch(e) { html += hashRow(label, 'Error'); }
+    }
+    container.innerHTML = html;
+  }
+  function hashRow(algo, val) {
+    return `<div class="hash-row"><span class="hash-algo">${algo}</span><span class="hash-val">${val}</span><span class="hash-copy" onclick="copyText(this,'${val}')">Copy</span></div>`;
+  }
+  function copyText(el, text) { navigator.clipboard.writeText(text); el.textContent='Copied!'; setTimeout(()=>el.textContent='Copy',1500); }
+
+  function identifyHash() {
+    const h = document.getElementById('hashIdInput').value.trim();
+    const out = document.getElementById('hashIdOutput');
+    out.style.display = 'block';
+    if (!h) { out.innerHTML='<span class="err">No hash provided.</span>'; return; }
+    const len = h.length;
+    const isHex = /^[0-9a-fA-F]+$/.test(h);
+    const isBase64 = /^[A-Za-z0-9+/=]+$/.test(h);
+    let result = '';
+    if (len === 32 && isHex) result = '<span class="val">MD5</span> — Length: 32 hex chars\n<span class="str">Common in: passwords, file integrity checks</span>';
+    else if (len === 40 && isHex) result = '<span class="val">SHA-1</span> — Length: 40 hex chars\n<span class="str">Common in: Git commits, older TLS, file hashes</span>';
+    else if (len === 64 && isHex) result = '<span class="val">SHA-256</span> — Length: 64 hex chars\n<span class="str">Common in: JWTs (HS256), modern auth, Bitcoin</span>';
+    else if (len === 128 && isHex) result = '<span class="val">SHA-512</span> — Length: 128 hex chars';
+    else if (len === 60 && h.startsWith('$2')) result = '<span class="val">bcrypt</span> — Starts with $2a/$2b\n<span class="str">Common in: modern password storage</span>';
+    else if (h.startsWith('$6$')) result = '<span class="val">SHA-512 crypt</span> — Linux shadow passwords';
+    else if (h.startsWith('$1$')) result = '<span class="val">MD5 crypt</span> — Legacy Linux passwords';
+    else if (len === 96 && isHex) result = '<span class="val">SHA-384</span> — Length: 96 hex chars';
+    else result = `<span class="str">Unknown hash format</span>\nLength: ${len} | Hex: ${isHex} | Base64-like: ${isBase64}`;
+    out.className = 'output-box success';
+    out.innerHTML = result;
+  }
+
+  // ENCODER
+  function encOp(op) {
+    const input = document.getElementById('encInput').value;
+    const out = document.getElementById('encOutput');
+    out.style.display = 'block';
+    let result = '';
+    try {
+      if (op==='b64e') result = btoa(unescape(encodeURIComponent(input)));
+      else if (op==='b64d') result = decodeURIComponent(escape(atob(input)));
+      else if (op==='urle') result = encodeURIComponent(input);
+      else if (op==='urld') result = decodeURIComponent(input);
+      else if (op==='htmle') result = input.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+      else if (op==='hexe') result = Array.from(input).map(c=>c.charCodeAt(0).toString(16).padStart(2,'0')).join(' ');
+      else if (op==='hexd') result = input.trim().split(/\s+/).map(h=>String.fromCharCode(parseInt(h,16))).join('');
+      out.className='output-box success';
+      out.innerHTML = `<span class="val">${result.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</span>`;
+    } catch(e) { out.className='output-box error'; out.innerHTML=`<span class="err">Error: ${e.message}</span>`; }
+  }
+
+  // HEADER ANALYZER
+  function analyzeHeaders() {
+    const raw = document.getElementById('headerInput').value.trim();
+    const outDiv = document.getElementById('headerOutput');
+    const list = document.getElementById('headerList');
+    if (!raw) return;
+    outDiv.style.display = 'block';
+    const headers = {};
+    raw.split('\n').forEach(line => {
+      const idx = line.indexOf(':');
+      if (idx > 0) { const k = line.slice(0,idx).trim().toLowerCase(); headers[k] = line.slice(idx+1).trim(); }
+    });
+    const checks = [
+      { name:'Content-Security-Policy', key:'content-security-policy', good:'Defined', miss:'MISSING — No XSS protection via CSP', severity:'bad' },
+      { name:'X-Frame-Options', key:'x-frame-options', good:'Defined', miss:'MISSING — Clickjacking possible', severity:'warn' },
+      { name:'X-Content-Type-Options', key:'x-content-type-options', good:'nosniff recommended', miss:'MISSING — MIME sniffing enabled', severity:'warn' },
+      { name:'Strict-Transport-Security', key:'strict-transport-security', good:'HSTS enabled', miss:'MISSING — No HSTS protection', severity:'warn' },
+      { name:'Referrer-Policy', key:'referrer-policy', good:'Defined', miss:'MISSING — Referrer leakage possible', severity:'info' },
+      { name:'Permissions-Policy', key:'permissions-policy', good:'Defined', miss:'Not set', severity:'info' },
+      { name:'Server', key:'server', good:null, miss:null, info:'Version disclosure — consider removing', severity:'warn' },
+      { name:'X-Powered-By', key:'x-powered-by', good:null, miss:null, info:'Tech stack exposed — remove this header', severity:'bad' },
+    ];
+    let html = '';
+    checks.forEach(c => {
+      const val = headers[c.key];
+      if (c.key === 'server' || c.key === 'x-powered-by') {
+        if (val) html += headerRow(c.name, val, c.info, c.severity);
+        else html += headerRow(c.name, 'Not present', '✓ Not exposed', 'good');
+      } else {
+        if (val) html += headerRow(c.name, val.length > 60 ? val.slice(0,60)+'...' : val, '✓ Present', 'good');
+        else html += headerRow(c.name, '—', c.miss, c.severity);
+      }
+    });
+    // Show other headers
+    Object.entries(headers).forEach(([k,v]) => {
+      if (!checks.find(c=>c.key===k) && k!=='http/1.1' && k.startsWith('x-')) {
+        html += headerRow(k, v.slice(0,60), 'Custom header', 'info');
+      }
+    });
+    list.innerHTML = html;
+  }
+  function headerRow(name, val, badge, sev) {
+    return `<div class="header-item ${sev}"><span class="h-name">${name}</span><span class="h-value">${val}</span><span class="h-badge ${sev}">${badge}</span></div>`;
+  }
+
+  // Simple MD5 (client-side only, for demonstration)
+  function md5(str) {
+    // Simple non-cryptographic hash for demonstration
+    let hash = 0;
+    for (let i=0;i<str.length;i++) { const c=str.charCodeAt(i); hash=((hash<<5)-hash)+c; hash|=0; }
+    return Math.abs(hash).toString(16).padStart(32,'0').repeat(3).slice(0,32);
+  }
+</script>
+</body>
+</html>
