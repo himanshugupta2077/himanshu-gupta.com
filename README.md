@@ -1,43 +1,50 @@
-# Astro Starter Kit: Minimal
+# Himanshu Gupta
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Offensive Security | Automation | AI-Augmented Pentesting
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+I build systems that automate offensive security and scale vulnerability discovery using code and AI.
 
-## 🚀 Project Structure
+---
 
-Inside of your Astro project, you'll see the following folders and files:
+## Work
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+- Penetration testing across web, API, mobile, cloud, and networks  
+- Building offensive security tooling and recon pipelines  
+- Applying AI to vulnerability discovery and exploitation workflows  
+- Automating security testing at scale  
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+---
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Current Focus
 
-Any static assets, like images, can be placed in the `public/` directory.
+- AI-assisted pentesting workflows  
+- Autonomous recon and attack surface mapping  
+- Security automation in CI/CD pipelines  
+- Building offensive tooling that scales beyond manual testing  
 
-## 🧞 Commands
+---
 
-All commands are run from the root of the project, from a terminal:
+## Projects
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+### Recon Pipeline
+Automated reconnaissance system for asset discovery, subdomain enumeration, and attack surface mapping.
 
-## 👀 Want to learn more?
+### AI Pentest Assistant
+LLM-based system for vulnerability triage, payload generation, and exploit assistance.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+### Burp Extensions
+Custom extensions to enhance testing workflows and reduce manual effort.
+
+---
+
+## Stack
+
+Python, Bash, Burp Suite, Nmap, Nuclei, Cloud Security, LLM APIs
+
+---
+
+## Contact
+
+Email: himanshugupta2077@gmail.com  
+LinkedIn: https://linkedin.com/in/himanshugupta2077
+GitHub: https://github.com/himanshugupta2077
