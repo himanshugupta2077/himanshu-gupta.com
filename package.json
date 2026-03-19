@@ -16,5 +16,8 @@
     "@astrojs/rss": "^4.0.17",
     "astro": "^6.0.6",
     "shiki": "^4.0.2"
+  },
+  "devDependencies": {
+    "wrangler": "^4.75.0"
   }
 }
