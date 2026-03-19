@@ -1,0 +1,219 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About"
+  description="Offensive Security Engineer building systems at the intersection of security, automation, and AI."
+>
+  <section class="about">
+    <div class="header">
+      <h1>Himanshu Gupta</h1>
+      <span class="role">Offensive Security Engineer</span>
+    </div>
+
+    <div class="block">
+      <p>I work on breaking systems and understanding how they fail.</p>
+      <p>
+        My focus is offensive security across web, APIs, mobile, infrastructure, and cloud.
+        I approach testing as system analysis.
+      </p>
+      <p>
+        I build tools to remove manual work, scale attack workflows, and uncover
+        vulnerabilities faster.
+      </p>
+    </div>
+
+    <div class="block">
+      <h2>Current Direction</h2>
+      <p>
+        Combining offensive security with AI to create systems that can:
+      </p>
+      <ul>
+        <li>automate reconnaissance</li>
+        <li>triage vulnerabilities</li>
+        <li>generate and test attack paths</li>
+      </ul>
+      <p class="goal">
+        Move from human-driven testing to <strong>system-driven offense</strong>.
+      </p>
+    </div>
+
+    <div class="block">
+      <h2>Work</h2>
+      <ul class="work-list">
+        <li>
+          <span class="work-title">Penetration Testing</span>
+          <span class="work-desc">Web applications, APIs, mobile (Android/iOS), network infrastructure, cloud environments, and secure code reviews. Full-scope and targeted engagements.</span>
+        </li>
+        <li>
+          <span class="work-title">Tool Development</span>
+          <span class="work-desc">Custom recon pipelines, Burp extensions, and offensive tooling built for real-world use.</span>
+        </li>
+        <li>
+          <span class="work-title">AI-Assisted Offense</span>
+          <span class="work-desc">LLM-augmented recon, automated triage, and payload generation for modern attack surfaces.</span>
+        </li>
+        <li>
+          <span class="work-title">Automation</span>
+          <span class="work-desc">End-to-end attack workflows, CI/CD security integration, and scalable bug bounty systems.</span>
+        </li>
+        <li>
+          <span class="work-title">Bug Bounty</span>
+          <span class="work-desc">Active on HackerOne and Bugcrowd.</span>
+        </li>
+        <li>
+          <span class="work-title">Content</span>
+          <span class="work-desc">Technical deep-dives, labs, and security education.</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h2>Certification</h2>
+      <ul>
+        <li>eWPTX — Web Application Penetration Tester eXtreme v2</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h2>Contact</h2>
+      <div class="contact-list">
+        <p class="contact-row">
+          <span class="label">email</span>
+          <a href="mailto:himanshugupta2077@gmail.com">himanshugupta2077@gmail.com</a>
+        </p>
+        <p class="contact-row">
+          <span class="label">linkedin</span>
+          <a href="https://linkedin.com/in/himanshugupta2077" target="_blank" rel="noopener noreferrer">linkedin.com/in/himanshugupta2077</a>
+        </p>
+        <p class="contact-row">
+          <span class="label">github</span>
+          <a href="https://github.com/himanshugupta2077" target="_blank" rel="noopener noreferrer">github.com/himanshugupta2077</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about {
+    max-width: 600px;
+  }
+
+  .header {
+    margin-bottom: 2.5rem;
+  }
+
+  h1 {
+    font-size: 1.375rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .role {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .block {
+    margin-bottom: 2.5rem;
+  }
+
+  h2 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+
+  .goal {
+    margin-top: 0.75rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    font-size: 0.9rem;
+    color: var(--text);
+    padding: 0.3rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  li:last-child {
+    border-bottom: none;
+  }
+
+  li::before {
+    content: '→ ';
+    color: var(--green);
+    font-family: var(--font-mono);
+  }
+
+  .work-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.5rem 0;
+  }
+
+  .work-list li::before {
+    display: none;
+  }
+
+  .work-title {
+    font-size: 0.875rem;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .work-title::before {
+    content: '→ ';
+    color: var(--green);
+    font-family: var(--font-mono);
+  }
+
+  .work-desc {
+    font-size: 0.825rem;
+    color: var(--text-muted);
+    padding-left: 1.25rem;
+  }
+
+  .contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .contact-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0;
+  }
+
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    min-width: 5rem;
+  }
+
+  .contact-row a {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--green);
+  }
+</style>

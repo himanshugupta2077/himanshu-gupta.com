@@ -1,17 +1,182 @@
 ---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { sortByDate, filterDrafts } from '../utils/content';
 
+const allResearch = sortByDate(filterDrafts(await getCollection('research')));
+const allProjects = sortByDate(filterDrafts(await getCollection('projects')));
+
+const researchFeatured = allResearch.filter(e => e.data.featured).slice(0, 3);
+const researchItems = researchFeatured.length > 0 ? researchFeatured : allResearch.slice(0, 3);
+
+const projectsFeatured = allProjects.filter(e => e.data.featured).slice(0, 3);
+const projectItems = projectsFeatured.length > 0 ? projectsFeatured : allProjects.slice(0, 3);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Himanshu Gupta">
+  <section class="hero">
+    <p class="prompt">$ whoami</p>
+    <h1>Himanshu Gupta</h1>
+    <p class="tagline">Offensive Security Engineer</p>
+    <p class="sub">
+      Building systems, tools, and ideas at the intersection of<br />
+      <span class="hl">offensive security</span> ·
+      <span class="hl">automation</span> ·
+      <span class="hl">AI systems</span>
+    </p>
+    <p class="note">
+      Not a service provider.<br />
+      A builder of leverage.
+    </p>
+  </section>
+
+  <hr />
+
+  {researchItems.length > 0 && (
+    <section class="section">
+      <div class="section-head">
+        <span class="section-label">Research</span>
+        <a href="/research" class="view-all">all →</a>
+      </div>
+      <ul class="entry-list">
+        {researchItems.map(entry => (
+          <li class="entry-item">
+            <a href={`/research/${entry.id}`}>{entry.data.title}</a>
+            <time>{entry.data.date.toISOString().slice(0, 10)}</time>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {projectItems.length > 0 && (
+    <section class="section">
+      <div class="section-head">
+        <span class="section-label">Projects</span>
+        <a href="/projects" class="view-all">all →</a>
+      </div>
+      <ul class="entry-list">
+        {projectItems.map(entry => (
+          <li class="entry-item">
+            <a href={`/projects/${entry.id}`}>{entry.data.title}</a>
+            <time>{entry.data.date.toISOString().slice(0, 10)}</time>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .hero {
+    padding: 2rem 0 3rem;
+  }
+
+  .prompt {
+    font-family: var(--font-mono);
+    font-size: 0.825rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .tagline {
+    font-family: var(--font-mono);
+    font-size: 0.925rem;
+    color: var(--green);
+    margin-bottom: 1.5rem;
+  }
+
+  .sub {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.9;
+    margin-bottom: 1.5rem;
+  }
+
+  .hl {
+    color: var(--text);
+  }
+
+  .note {
+    font-family: var(--font-mono);
+    font-size: 0.825rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .section {
+    margin-bottom: 2.75rem;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+  }
+
+  .view-all {
+    font-family: var(--font-mono);
+    font-size: 0.775rem;
+    color: var(--text-muted);
+  }
+
+  .view-all:hover {
+    color: var(--green);
+    text-decoration: none;
+  }
+
+  .entry-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .entry-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--border);
+    gap: 1rem;
+  }
+
+  .entry-item:first-child {
+    border-top: 1px solid var(--border);
+  }
+
+  .entry-item a {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .entry-item a:hover {
+    color: var(--green);
+    text-decoration: none;
+  }
+
+  time {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+</style>

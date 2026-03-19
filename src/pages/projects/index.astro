@@ -1,0 +1,114 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { sortByDate, filterDrafts } from '../../utils/content';
+
+const entries = sortByDate(filterDrafts(await getCollection('projects')));
+---
+
+<BaseLayout
+  title="Projects"
+  description="Tools, automation frameworks, and AI experiments in offensive security."
+>
+  <div class="page-header">
+    <h1>Projects</h1>
+    <p>Tools built, systems automated, capabilities demonstrated.</p>
+  </div>
+
+  {entries.length === 0 ? (
+    <p class="empty">No projects published yet.</p>
+  ) : (
+    <ul class="entry-list">
+      {entries.map(entry => (
+        <li class="entry-item">
+          <div class="entry-main">
+            <a href={`/projects/${entry.id}`}>{entry.data.title}</a>
+            <p>{entry.data.description}</p>
+          </div>
+          <time datetime={entry.data.date.toISOString()}>
+            {entry.data.date.toISOString().slice(0, 10)}
+          </time>
+        </li>
+      ))}
+    </ul>
+  )}
+</BaseLayout>
+
+<style>
+  .page-header {
+    margin-bottom: 3rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.375rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .page-header p {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  .empty {
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+  }
+
+  .entry-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .entry-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--border);
+    gap: 2rem;
+  }
+
+  .entry-item:first-child {
+    border-top: 1px solid var(--border);
+  }
+
+  .entry-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .entry-main a {
+    font-family: var(--font-mono);
+    font-size: 0.925rem;
+    color: var(--text-bright);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  .entry-main a:hover {
+    color: var(--green);
+    text-decoration: none;
+  }
+
+  .entry-main p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  time {
+    font-family: var(--font-mono);
+    font-size: 0.775rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding-top: 0.1rem;
+  }
+
+  @media (max-width: 540px) {
+    .entry-item { flex-direction: column; gap: 0.5rem; }
+    time { padding-top: 0; }
+  }
+</style>
