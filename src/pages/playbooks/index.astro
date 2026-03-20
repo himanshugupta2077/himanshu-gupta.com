@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { sortByDate, filterDrafts } from '../../utils/content';
+import { sortByDate, filterDrafts, formatDate } from '../../utils/content';
 
 const entries = sortByDate(filterDrafts(await getCollection('playbooks')));
 ---
@@ -26,7 +26,7 @@ const entries = sortByDate(filterDrafts(await getCollection('playbooks')));
             <p>{entry.data.description}</p>
           </div>
           <time datetime={entry.data.date.toISOString()}>
-            {entry.data.date.toISOString().slice(0, 10)}
+            {formatDate(entry.data.date)}
           </time>
         </li>
       ))}

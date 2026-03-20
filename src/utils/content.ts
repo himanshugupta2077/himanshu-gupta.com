@@ -5,3 +5,7 @@ export function sortByDate<T extends { data: { date: Date } }>(entries: T[]): T[
 export function filterDrafts<T extends { data: { draft?: boolean } }>(entries: T[]): T[] {
   return entries.filter(entry => !entry.data.draft);
 }
+
+export function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}

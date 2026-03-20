@@ -1,7 +1,7 @@
 ---
 title: "Anatomy of a Phishing Infrastructure"
 description: "How modern phishing campaigns build, rotate, and operate infrastructure that survives enterprise defenses. A breakdown of real operational patterns."
-date: 2025-11-15
+date: 15 Nov 2025
 tags: ["phishing", "infrastructure", "red-team", "evasion"]
 featured: true
 ---

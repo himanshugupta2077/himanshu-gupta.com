@@ -1,7 +1,7 @@
 ---
 title: "recon-ai"
 description: "AI-augmented reconnaissance framework. Adapts scan depth and technique selection based on target fingerprint. Built for complex, multi-scope environments."
-date: 2025-10-20
+date: 20 Oct 2025
 tags: ["recon", "automation", "AI", "tooling", "python"]
 featured: true
 github: "https://github.com/himanshugupta2077/recon-ai"

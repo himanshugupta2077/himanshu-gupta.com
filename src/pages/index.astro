@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { sortByDate, filterDrafts } from '../utils/content';
+import { sortByDate, filterDrafts, formatDate } from '../utils/content';
 
 const allResearch = sortByDate(filterDrafts(await getCollection('research')));
 const allProjects = sortByDate(filterDrafts(await getCollection('projects')));
@@ -46,7 +46,7 @@ const playbookItems = playbooksFeatured.length > 0 ? playbooksFeatured : allPlay
         {researchItems.map(entry => (
           <li class="entry-item">
             <a href={`/research/${entry.id}`}>{entry.data.title}</a>
-            <time>{entry.data.date.toISOString().slice(0, 10)}</time>
+            <time>{formatDate(entry.data.date)}</time>
           </li>
         ))}
       </ul>
@@ -63,7 +63,7 @@ const playbookItems = playbooksFeatured.length > 0 ? playbooksFeatured : allPlay
         {projectItems.map(entry => (
           <li class="entry-item">
             <a href={`/projects/${entry.id}`}>{entry.data.title}</a>
-            <time>{entry.data.date.toISOString().slice(0, 10)}</time>
+            <time>{formatDate(entry.data.date)}</time>
           </li>
         ))}
       </ul>
@@ -80,7 +80,7 @@ const playbookItems = playbooksFeatured.length > 0 ? playbooksFeatured : allPlay
         {playbookItems.map(entry => (
           <li class="entry-item">
             <a href={`/playbooks/${entry.id}`}>{entry.data.title}</a>
-            <time>{entry.data.date.toISOString().slice(0, 10)}</time>
+            <time>{formatDate(entry.data.date)}</time>
           </li>
         ))}
       </ul>

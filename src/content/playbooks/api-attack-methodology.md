@@ -1,7 +1,7 @@
 ---
 title: "API Attack Methodology"
 description: "A structured approach to attacking REST and GraphQL APIs. From discovery and authentication bypass to business logic exploitation and mass assignment."
-date: 2025-09-10
+date: 10 Sep 2025
 tags: ["API", "methodology", "web", "testing"]
 featured: true
 ---
