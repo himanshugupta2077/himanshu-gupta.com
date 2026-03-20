@@ -2,16 +2,24 @@
 import BaseLayout from './BaseLayout.astro';
 import { formatDate } from '../utils/content';
 
+interface MarkdownHeading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
 interface Props {
   title: string;
   description: string;
   date: Date;
   tags: string[];
   collection: string;
+  headings?: MarkdownHeading[];
 }
 
-const { title, description, date, tags, collection } = Astro.props;
+const { title, description, date, tags, collection, headings = [] } = Astro.props;
 const formattedDate = formatDate(date);
+const tocHeadings = headings.filter(h => h.depth >= 2 && h.depth <= 3);
 ---
 
 <BaseLayout title={title} description={description}>
@@ -38,9 +46,111 @@ const formattedDate = formatDate(date);
       <slot />
     </div>
   </article>
+
+  {tocHeadings.length > 0 && (
+    <aside class="toc-sidebar">
+      <p class="toc-label">on this page</p>
+      <ul>
+        {tocHeadings.map(h => (
+          <li>
+            <a
+              href={`#${h.slug}`}
+              data-heading={h.slug}
+              class:list={[{ 'toc-h3': h.depth === 3 }]}
+            >{h.text}</a>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  )}
 </BaseLayout>
 
+<script>
+  const headingEls = Array.from(document.querySelectorAll('.prose h2, .prose h3'));
+  const tocLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.toc-sidebar a[data-heading]'));
+
+  if (headingEls.length > 0 && tocLinks.length > 0) {
+    function setActive() {
+      let activeId = (headingEls[0] as HTMLElement).id;
+      for (const h of headingEls) {
+        if ((h as HTMLElement).getBoundingClientRect().top <= 120) {
+          activeId = (h as HTMLElement).id;
+        }
+      }
+      tocLinks.forEach(l =>
+        l.classList.toggle('active', l.dataset.heading === activeId)
+      );
+    }
+
+    window.addEventListener('scroll', setActive, { passive: true });
+    setActive();
+  }
+</script>
+
 <style>
+  /* === TOC Sidebar === */
+  .toc-sidebar {
+    position: fixed;
+    top: 5.5rem;
+    left: calc(50% + 380px);
+    width: 180px;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+    display: none;
+  }
+
+  @media (min-width: 1280px) {
+    .toc-sidebar {
+      display: block;
+    }
+  }
+
+  .toc-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 0.6rem;
+  }
+
+  .toc-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-sidebar li {
+    margin: 0;
+  }
+
+  .toc-sidebar a {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.73rem;
+    color: var(--text-muted);
+    padding: 0.2rem 0 0.2rem 0.75rem;
+    line-height: 1.4;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .toc-sidebar a.toc-h3 {
+    padding-left: 1.35rem;
+  }
+
+  .toc-sidebar a:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .toc-sidebar a.active {
+    color: var(--green);
+    border-left-color: var(--green);
+  }
+
+  /* === Post Layout === */
   .back-nav {
     margin-bottom: 2.5rem;
   }
