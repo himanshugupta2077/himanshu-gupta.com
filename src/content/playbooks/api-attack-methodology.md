@@ -8,7 +8,7 @@ featured: true
 
 APIs are the most interesting attack surface in modern web applications. They're less audited than UI flows, they expose raw business logic, and authorization failures are endemic.
 
-This is the methodology I use.
+> This is the methodology I use.
 
 ## Phase 1: Discovery and Mapping
 

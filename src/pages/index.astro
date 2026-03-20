@@ -5,12 +5,16 @@ import { sortByDate, filterDrafts } from '../utils/content';
 
 const allResearch = sortByDate(filterDrafts(await getCollection('research')));
 const allProjects = sortByDate(filterDrafts(await getCollection('projects')));
+const allPlaybooks = sortByDate(filterDrafts(await getCollection('playbooks')));
 
 const researchFeatured = allResearch.filter(e => e.data.featured).slice(0, 3);
 const researchItems = researchFeatured.length > 0 ? researchFeatured : allResearch.slice(0, 3);
 
 const projectsFeatured = allProjects.filter(e => e.data.featured).slice(0, 3);
 const projectItems = projectsFeatured.length > 0 ? projectsFeatured : allProjects.slice(0, 3);
+
+const playbooksFeatured = allPlaybooks.filter(e => e.data.featured).slice(0, 3);
+const playbookItems = playbooksFeatured.length > 0 ? playbooksFeatured : allPlaybooks.slice(0, 3);
 ---
 
 <BaseLayout title="Himanshu Gupta">
@@ -59,6 +63,23 @@ const projectItems = projectsFeatured.length > 0 ? projectsFeatured : allProject
         {projectItems.map(entry => (
           <li class="entry-item">
             <a href={`/projects/${entry.id}`}>{entry.data.title}</a>
+            <time>{entry.data.date.toISOString().slice(0, 10)}</time>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {playbookItems.length > 0 && (
+    <section class="section">
+      <div class="section-head">
+        <span class="section-label">Playbooks</span>
+        <a href="/playbooks" class="view-all">all →</a>
+      </div>
+      <ul class="entry-list">
+        {playbookItems.map(entry => (
+          <li class="entry-item">
+            <a href={`/playbooks/${entry.id}`}>{entry.data.title}</a>
             <time>{entry.data.date.toISOString().slice(0, 10)}</time>
           </li>
         ))}
