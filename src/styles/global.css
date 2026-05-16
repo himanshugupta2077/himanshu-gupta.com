@@ -87,6 +87,25 @@ pre code {
   font-size: 0.875rem;
 }
 
+/* === Code block scrollbar (Chromium) === */
+pre::-webkit-scrollbar {
+  height: 5px;
+}
+
+pre::-webkit-scrollbar-track {
+  background: var(--bg-elevated);
+  border-radius: 0 0 6px 6px;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background: #2d333b;
+  border-radius: 3px;
+}
+
+pre::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
 /* === Blockquote === */
 blockquote {
   border-left: 3px solid var(--green);
