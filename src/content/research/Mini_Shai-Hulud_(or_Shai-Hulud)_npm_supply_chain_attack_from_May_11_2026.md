@@ -6,9 +6,8 @@ tags: ["supply-chain", "npm", "ci-cd", "github-actions", "security"]
 featured: true
 ---
 
-# Signed. Verified. Malicious.
-
-*How a six-minute npm release window turned half the ecosystem into a credential stealer.*
+![alt text](002.png)
+> How a six-minute npm release window turned half the ecosystem into a credential stealer.
 
 ---
 
